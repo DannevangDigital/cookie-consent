@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="cookieconsent.js" data-nobanner type="text/javascript"></script>
+    <script src="marketing.js" data-cookieconsent="marketing" type="text/plain"></script>
+    <script src="statistic.js" data-cookieconsent="statistics" type="text/plain"></script>
+    <script src="preferences.js" data-cookieconsent="preferences" type="text/plain"></script>
+    <script src="neccessary.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="showCookie">
+    <img src="cookie.svg">
+</div>
+
+<div class="cookieOverlay">
+    <div class="cookieContainer">
+        <div class="cookieText">
+            <h2>Du bestemmer brugen af dine data</h2>
+            <p>Vi bruger cookies til at personalisere dine brugeroplevelse og til at undersøge, hvordan vores hjemmeside bliver brugt og kan blive bedre. Cookies er fx også nødvendige, for at vi kan give dig log ind og se videoer.
+                Ved at klikke ’acceptere alle’ giver du dit samtykke til vores cookies.</p>
+        </div>
+        <div class="cookieAccept">
+            <button type="submit" onclick="updateSettings();" class="button btn">Accepter valgte</button>
+            <button type="submit" onclick="updateSettingsAll();" class="button btn accept">Accepter alle</button>
+        </div>
+        <div class="cookieMore">Vis cookiespecifikation</div>
+        <div class="cookieDescription hidden">
+            <h3>Nødvendige</h3>
+            <p>Nødvendige cookies hjælper med at aktivere grundlæggende funktioner fx sidenavigation og adgang til sikre områder af hjemmesiden.
+                Hjemmesiden kan ikke fungere optimalt uden disse cookies.</p>
+            <h3>Funktionelle</h3>
+            <p>Vi indsamler oplysninger om dine foretrukne indstillinger og valg på vores hjemmeside. Det gør, at vi kan vise dig den version af vores hjemmeside, der passer til dine valg og præferencer.</p>
+            <h3>Statistiske</h3>
+            <p>Vi indsamler oplysninger om, hvordan du bruger vores hjemmeside. Blandt andet hvilke sider du har kigget på. Dette hjælper med at optimere kommunikationsflow, design og brugervenligheden.</p>
+            <h3>Marketing</h3>
+            <p>Vi indsamler oplysninger om dine interesser, herunder hvilke sider du har besøgt. Det gør vi for at kunne vise dig målrettet indhold på vores hjemmeside samt visning af indhold på hjemmesider, som vi samarbejder med.</p>
+        </div>
+        <div class="cookieToggles">
+            <div class="cookieToggle">
+                <p>Nødvendige</p>
+                <div class="toggle">
+                    <input id="necessary" type="checkbox" checked disabled>
+                    <span class="slider"></span>
+                </div>
+            </div>
+            <div class="cookieToggle">
+                <p>Funktionelle</p>
+                <label class="toggle">
+                    <input id="preferences" type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="cookieToggle">
+                <p>Statistiske</p>
+                <label class="toggle">
+                    <input id="statistics" type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="cookieToggle">
+                <p>Marketing</p>
+                <label class="toggle">
+                    <input id="marketing" type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $( document ).ready(function() {
+        if (NHSCookieConsent.getConsented() === false) {
+            $( '.cookieOverlay' ).show();
+        }
+
+        $( '#showCookie' ).click(function( event ) {
+            $( '.cookieOverlay' ).show();
+        });
+
+        $( '.cookieMore' ).click(function() {
+            $( '.cookieDescription' ).toggleClass('hidden');
+        });
+
+        $('body').click(function (event)
+        {
+            if(!$(event.target).closest('.cookieContainer').length && !$(event.target).is('.cookieContainer') && !$(event.target).is('#showCookie')) {
+                $( '.cookieContainer' ).addClass('shake');
+                setTimeout(function() {
+                    $( '.cookieContainer' ).removeClass('shake');
+                }, 800);
+            }
+        });
+    });
+
+    var preferences = document.getElementById("preferences");
+    var statistics = document.getElementById("statistics");
+    var marketing = document.getElementById("marketing");
+
+    preferences.checked = NHSCookieConsent.getPreferences();
+    statistics.checked = NHSCookieConsent.getStatistics();
+    marketing.checked = NHSCookieConsent.getMarketing();
+
+    function updateSettings() {
+        NHSCookieConsent.setPreferences(preferences.checked);
+        NHSCookieConsent.setStatistics(statistics.checked);
+        NHSCookieConsent.setMarketing(marketing.checked);
+        // If the user has hit save, then they have consented.
+        NHSCookieConsent.setConsented(true);
+        // reload
+        location = location;
+    }
+
+    function updateSettingsAll() {
+        NHSCookieConsent.setPreferences(true);
+        NHSCookieConsent.setStatistics(true);
+        NHSCookieConsent.setMarketing(true);
+        // If the user has hit save, then they have consented.
+        NHSCookieConsent.setConsented(true);
+        // reload
+        location = location;
+    }
+</script>
+
+</body>
+</html>
